@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('_caracteristiques_products', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->foreignId("product_id")->constrained("products","id");
+            $table->foreignId("caracteristique_id")->constrained("caracteristiques","id");
+            $table->string("value");
         });
     }
 
