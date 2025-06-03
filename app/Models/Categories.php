@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Categories extends Model
 {
@@ -11,4 +12,6 @@ class Categories extends Model
         'parent_id'
     ];
     protected $table = 'categories';
+
+    // use SoftDeletes;
 }
