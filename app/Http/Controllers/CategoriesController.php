@@ -7,12 +7,27 @@ use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
 {
+    public function index(){
+        return "ok";
+    }
+    public function getParentsCategories(Request $request){
+        $categories = Categories::select("*")->where("parent_id",null)->get();
+        $tab_categories = array();
+        foreach($categories as $category){
+            array_push($tab_categories,[
+                "id" => $category->id,
+                "name" => $category->name,
+            ]);
+        }
+        return $tab_categories;
+    }
+
     /**
      * Ajouter une nouvelle catégorie à la base de données.
      * @param \Illuminate\Http\Request $request
      * @return mixed|\Illuminate\Http\JsonResponse
      */
-    public function addCategoryToBDD(Request $request)
+    public function addCategory(Request $request)
     {
         //J'attend un tab JSON avec "name" et "parent_id" (optionnel)
         try {
