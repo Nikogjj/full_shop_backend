@@ -7,8 +7,38 @@ use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
 {
-    public function index(){
-        return "ok";
+    public function getCategoryById(string $id){
+        //Je vérifie que l'id est un nombre
+        if (!is_numeric($id)) {
+            return response()->json([
+                "message" => "L'id de la catégorie ne correspond à aucune catégorie"
+            ], 400);
+        }
+        //Je cherche la catégorie dans la base de données
+        $category = Categories::find($id);
+        if ($category) {
+            $nom_parent = "";
+            if ($category->parent_id != null) {
+                $parent = Categories::find($category->parent_id);
+                if ($parent) $nom_parent = $parent->name;
+                else $nom_parent = null;
+            } 
+            else {
+                $nom_parent = null;
+            }
+            return response()->json([
+                "id" => $category->id,
+                "nom" => $category->name,
+                "nom_parent" => $nom_parent,
+                "dateCreation" => $category->created_at,
+                "dateModification" => date($category->updated_at)
+            ], 200);
+        }
+        else{
+            return response()->json([
+                "message" => "La catégorie n'existe pas"
+            ], 404);
+        }
     }
     public function getParentsCategories(Request $request){
         $categories = Categories::select("*")->where("parent_id",null)->get();
@@ -16,7 +46,9 @@ class CategoriesController extends Controller
         foreach($categories as $category){
             array_push($tab_categories,[
                 "id" => $category->id,
-                "name" => $category->name,
+                "nom" => $category->name,
+                "dateCreation" => $category->created_at,
+                "dateModification" => date($category->updated_at)
             ]);
         }
         return $tab_categories;

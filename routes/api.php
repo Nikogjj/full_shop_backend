@@ -17,7 +17,8 @@ Route::post("login",[AuthController::class,"login"]);
 // A FAIRE ROUTE ADMIN
 Route::post("add_category",[CategoriesController::class,"addCategory"]);
 route::get("get_parents_categories",[CategoriesController::class,"getParentsCategories"]);
-Route::get("get_categories",[CategoriesController::class,"getCategories"]);
+Route::get("get_categories",[CategoriesController::class,"getParentsCategories"]);
+Route::get("get_category/{id}",[CategoriesController::class,"getCategoryById"]);
 Route::delete("delete_category/{id}",[CategoriesController::class,"deleteCategory"]);
 
 // Route::get("get_product",[ProductsController::class,"getProduct"]);
